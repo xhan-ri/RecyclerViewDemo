@@ -3,8 +3,15 @@
       xmlns:tools="http://schemas.android.com/tools"
       tools:context="com.rhapsody.xhan.recyclerviewdemo.MainActivity">
     <item
+        android:id="@+id/add_datasetchange"
+        android:title="Add with dataSetChanged"/>
+    <item
+        android:id="@+id/add_notifyitemadded"
+        android:title="Add with NotifyItemAdded"/>
+    <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
         android:title="@string/action_settings"
         app:showAsAction="never"/>
+
 </menu>
