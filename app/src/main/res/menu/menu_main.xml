@@ -8,10 +8,9 @@
     <item
         android:id="@+id/add_notifyitemadded"
         android:title="Add with NotifyItemAdded"/>
-    <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:title="@string/action_settings"
-        app:showAsAction="never"/>
+    <item android:id="@+id/remove_datasetchange"
+        android:title="Remove with dataSetChanged"/>
+    <item android:id="@+id/remove_notifyitemremoved"
+          android:title="Remove with NotifyItemRemoved"/>
 
 </menu>

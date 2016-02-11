@@ -12,8 +12,15 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.rhapsody.xhan.recyclerviewdemo.MainActivity"
     tools:showIn="@layout/activity_main">
+    <CheckBox
+        android:id="@+id/support_predictive_animation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:text="Support predictive animation"/>
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:layout_below="@id/support_predictive_animation"/>
 </RelativeLayout>

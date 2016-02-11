@@ -2,7 +2,6 @@ package com.rhapsody.xhan.recyclerviewdemo;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.CheckBox;
 
 import com.rhapsody.xhan.recyclerviewdemo.view.DemoAdapter;
 
@@ -38,9 +38,19 @@ public class MainActivity extends AppCompatActivity {
 			@Override
 			public void onClick(View view) {
 				recyclerView.setAdapter(new DemoAdapter(generateDemoItems(50)));
-				recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+				recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this) {
+					@Override
+					public boolean supportsPredictiveItemAnimations() {
+						CheckBox supportPredictiveAnimationCheck = (CheckBox)findViewById(R.id.support_predictive_animation);
+						return supportPredictiveAnimationCheck.isChecked();
+					}
+				});
 			}
 		});
+		recyclerView.getItemAnimator().setAddDuration(3000);
+		recyclerView.getItemAnimator().setRemoveDuration(3000);
+		recyclerView.getItemAnimator().setChangeDuration(3000);
+		recyclerView.getItemAnimator().setChangeDuration(3000);
 	}
 
 	@Override
@@ -57,25 +67,36 @@ public class MainActivity extends AppCompatActivity {
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 
-		//noinspection SimplifiableIfStatement
-		if (id == R.id.action_settings) {
-			return true;
-		}
-
 		if (id == R.id.add_datasetchange) {
 			int nextIndex = recyclerView.getAdapter().getItemCount();
 			String newItem = generateDemoItem(nextIndex);
-			((DemoAdapter)recyclerView.getAdapter()).add(newItem);
+			((DemoAdapter)recyclerView.getAdapter()).insert(getCenterAdapterIndex(), newItem);
 			recyclerView.getAdapter().notifyDataSetChanged();
+			return true;
 		}
 
 		if (id == R.id.add_notifyitemadded) {
 			int nextIndex = recyclerView.getAdapter().getItemCount();
 			String newItem = generateDemoItem(nextIndex);
-			((DemoAdapter)recyclerView.getAdapter()).add(newItem);
-			recyclerView.getAdapter().notifyItemInserted(0);
-			recyclerView.smoothScrollToPosition(0);
+			int insertAdapterIndex = getCenterAdapterIndex();
+			((DemoAdapter)recyclerView.getAdapter()).insert(insertAdapterIndex, newItem);
+			recyclerView.getAdapter().notifyItemInserted(insertAdapterIndex);
+			return true;
 		}
+
+		if (id == R.id.remove_datasetchange) {
+			((DemoAdapter)recyclerView.getAdapter()).removeRange(getCenterAdapterIndex(), 3);
+			recyclerView.getAdapter().notifyDataSetChanged();
+			return true;
+		}
+
+		if (id == R.id.remove_notifyitemremoved) {
+			int centerItemAdapterIndex = getCenterAdapterIndex();
+			((DemoAdapter)recyclerView.getAdapter()).removeRange(centerItemAdapterIndex, 3);
+			recyclerView.getAdapter().notifyItemRangeRemoved(centerItemAdapterIndex, 3);
+		}
+
+
 
 		return super.onOptionsItemSelected(item);
 	}
@@ -96,5 +117,13 @@ public class MainActivity extends AppCompatActivity {
 		char[] chars = new char[len];
 		Arrays.fill(chars, ch);
 		return new String(chars);
+	}
+
+	private int getCenterAdapterIndex() {
+		View firstView = recyclerView.getLayoutManager().getChildAt(0);
+		int firstItemAdapterIndex = recyclerView.getChildAdapterPosition(firstView);
+		View lastView = recyclerView.getLayoutManager().getChildAt(recyclerView.getLayoutManager().getChildCount() - 1);
+		int lastItemAdapterIndex = recyclerView.getChildAdapterPosition(lastView);
+		return firstItemAdapterIndex + (lastItemAdapterIndex - firstItemAdapterIndex) / 2;
 	}
 }

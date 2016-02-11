@@ -40,7 +40,29 @@ public class DemoAdapter extends RecyclerView.Adapter<ItemViewHolder> {
 		items.addAll(0, Arrays.asList(newItems));
 	}
 
+	public void insert(int index, String... newItems) {
+		if (newItems == null || newItems.length == 0) {
+			return;
+		}
+
+		int addCount = 0;
+		for (String newItem : newItems) {
+			items.add(index + addCount, newItem);
+			addCount ++;
+		}
+	}
+
 	public void remove(String... itemsToRemove) {
 		items.removeAll(Arrays.asList(itemsToRemove));
+	}
+
+	public void removeAt(int index) {
+		items.remove(index);
+	}
+
+	public void removeRange(int index, int count) {
+		for (int i = index + count - 1; i >= index; i --) {
+			items.remove(i);
+		}
 	}
 }
