@@ -35,4 +35,6 @@ dependencies {
     compile(group: 'com.android.support', name: 'cardview-v7', version: supportLibVersion)
     compile(group: 'com.android.support', name: 'design', version: supportLibVersion)
     compile(group: 'com.android.support', name: 'percent', version: supportLibVersion)
+
+    compile 'com.xiaofeng.android:flowlayoutmanager:1.1.1'
 }
